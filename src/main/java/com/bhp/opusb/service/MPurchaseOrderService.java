@@ -4,6 +4,7 @@ import com.bhp.opusb.domain.MPurchaseOrder;
 import com.bhp.opusb.repository.MPurchaseOrderRepository;
 import com.bhp.opusb.service.dto.MPurchaseOrderDTO;
 import com.bhp.opusb.service.mapper.MPurchaseOrderMapper;
+import com.bhp.opusb.util.MapperJSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -54,7 +56,15 @@ public class MPurchaseOrderService {
      * @return the persisted entity.
      */
     public MPurchaseOrderDTO save(MPurchaseOrderDTO mPurchaseOrderDTO) {
+        log.info("this json");
+        log.info(MapperJSONUtil.prettyLog(mPurchaseOrderDTO));
         log.debug("Request to save MPurchaseOrder : {}", mPurchaseOrderDTO);
+
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        String documentno = "PO-"+number;
+        mPurchaseOrderDTO.setDocumentNo(documentno);
+        log.info("this document no {}",documentno);
         MPurchaseOrder mPurchaseOrder = mPurchaseOrderMapper.toEntity(mPurchaseOrderDTO);
         mPurchaseOrder = mPurchaseOrderRepository.save(mPurchaseOrder);
         return mPurchaseOrderMapper.toDto(mPurchaseOrder);

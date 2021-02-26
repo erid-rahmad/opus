@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Service Implementation for managing {@link MRequisition}.
@@ -40,6 +41,10 @@ public class MRequisitionService {
      */
     public MRequisitionDTO save(MRequisitionDTO mRequisitionDTO) {
         log.debug("Request to save MRequisition : {}", mRequisitionDTO);
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        String documentno = "PO-"+number;
+        mRequisitionDTO.setDocumentNo(documentno);
         MRequisition mRequisition = mRequisitionMapper.toEntity(mRequisitionDTO);
         mRequisition = mRequisitionRepository.save(mRequisition);
         return mRequisitionMapper.toDto(mRequisition);

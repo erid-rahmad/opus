@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -65,6 +66,48 @@ public class MPurchaseOrderDTO extends AbstractAuditingDTO {
 
     private Long costCenterId;
     private String costCenterName;
+
+    private List<MPurchaseOrderLineDTO> mPurchaseOrderLineDTOList;
+
+    @Override
+    public String toString() {
+        return "MPurchaseOrderDTO{" +
+            "id=" + id +
+            ", dateTrx=" + dateTrx +
+            ", documentNo='" + documentNo + '\'' +
+            ", documentAction='" + documentAction + '\'' +
+            ", documentStatus='" + documentStatus + '\'' +
+            ", approved=" + approved +
+            ", processed=" + processed +
+            ", grandTotal=" + grandTotal +
+            ", tax=" + tax +
+            ", datePromised=" + datePromised +
+            ", description='" + description + '\'' +
+            ", uid=" + uid +
+            ", active=" + active +
+            ", adOrganizationId=" + adOrganizationId +
+            ", adOrganizationName='" + adOrganizationName + '\'' +
+            ", documentTypeId=" + documentTypeId +
+            ", documentTypeName='" + documentTypeName + '\'' +
+            ", vendorId=" + vendorId +
+            ", vendorName='" + vendorName + '\'' +
+            ", currencyId=" + currencyId +
+            ", currencyName='" + currencyName + '\'' +
+            ", warehouseId=" + warehouseId +
+            ", warehouseName='" + warehouseName + '\'' +
+            ", costCenterId=" + costCenterId +
+            ", costCenterName='" + costCenterName + '\'' +
+            ", mPurchaseOrderLineDTOList=" + mPurchaseOrderLineDTOList +
+            '}';
+    }
+
+    public List<MPurchaseOrderLineDTO> getmPurchaseOrderLineDTOList() {
+        return mPurchaseOrderLineDTOList;
+    }
+
+    public void setmPurchaseOrderLineDTOList(List<MPurchaseOrderLineDTO> mPurchaseOrderLineDTOList) {
+        this.mPurchaseOrderLineDTOList = mPurchaseOrderLineDTOList;
+    }
 
     public Long getId() {
         return id;
@@ -287,34 +330,4 @@ public class MPurchaseOrderDTO extends AbstractAuditingDTO {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "MPurchaseOrderDTO{" +
-            "id=" + getId() +
-            ", dateTrx='" + getDateTrx() + "'" +
-            ", documentNo='" + getDocumentNo() + "'" +
-            ", documentAction='" + getDocumentAction() + "'" +
-            ", documentStatus='" + getDocumentStatus() + "'" +
-            ", approved='" + isApproved() + "'" +
-            ", processed='" + isProcessed() + "'" +
-            ", grandTotal=" + getGrandTotal() +
-            ", tax='" + isTax() + "'" +
-            ", datePromised='" + getDatePromised() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", uid='" + getUid() + "'" +
-            ", active='" + isActive() + "'" +
-            ", adOrganizationId=" + getAdOrganizationId() +
-            ", adOrganizationName=" + getAdOrganizationName() +
-            ", documentTypeId=" + getDocumentTypeId() +
-            ", documentTypeName=" + getDocumentTypeName() +
-            ", vendorId=" + getVendorId() +
-            ", vendorName=" + getVendorName() +
-            ", currencyId=" + getCurrencyId() +
-            ", currencyName=" + getCurrencyName() +
-            ", warehouseId=" + getWarehouseId() +
-            ", warehouseName=" + getWarehouseName() +
-            ", costCenterId=" + getCostCenterId() +
-            ", costCenterName=" + getCostCenterName() +
-            "}";
-    }
 }

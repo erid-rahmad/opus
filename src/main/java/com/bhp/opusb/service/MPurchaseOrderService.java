@@ -3,12 +3,15 @@ package com.bhp.opusb.service;
 import com.bhp.opusb.domain.MPurchaseOrder;
 import com.bhp.opusb.repository.MPurchaseOrderRepository;
 import com.bhp.opusb.service.dto.MPurchaseOrderDTO;
+import com.bhp.opusb.service.dto.MPurchaseOrderLineDTO;
 import com.bhp.opusb.service.mapper.MPurchaseOrderMapper;
 import com.bhp.opusb.util.MapperJSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +26,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -49,6 +50,9 @@ public class MPurchaseOrderService {
         this.dataSource = dataSource;
     }
 
+    @Autowired
+    MPurchaseOrderLineService mPurchaseOrderLineService;
+
     /**
      * Save a mPurchaseOrder.
      *
@@ -58,7 +62,7 @@ public class MPurchaseOrderService {
     public MPurchaseOrderDTO save(MPurchaseOrderDTO mPurchaseOrderDTO) {
         log.info("this json");
         log.info(MapperJSONUtil.prettyLog(mPurchaseOrderDTO));
-        log.debug("Request to save MPurchaseOrder : {}", mPurchaseOrderDTO);
+        log.debug("Request to save MPurchaseOrder 22: {}", mPurchaseOrderDTO);
 
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
@@ -78,9 +82,15 @@ public class MPurchaseOrderService {
      */
     @Transactional(readOnly = true)
     public Page<MPurchaseOrderDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all MPurchaseOrders");
-        return mPurchaseOrderRepository.findAll(pageable)
+        log.debug("Request to get all MPurchaseOrders 11");
+//        log.info(MapperJSONUtil.prettyLog());
+        Page<MPurchaseOrderDTO> page;
+        page = mPurchaseOrderRepository.findAll(pageable)
             .map(mPurchaseOrderMapper::toDto);
+        log.debug("this page {}",MapperJSONUtil.prettyLog(page));
+//        return mPurchaseOrderRepository.findAll(pageable)
+//            .map(mPurchaseOrderMapper::toDto);
+        return null;
     }
 
     /**
@@ -91,9 +101,27 @@ public class MPurchaseOrderService {
      */
     @Transactional(readOnly = true)
     public Optional<MPurchaseOrderDTO> findOne(Long id) {
+
         log.debug("Request to get MPurchaseOrder : {}", id);
-        return mPurchaseOrderRepository.findById(id)
+        Optional<MPurchaseOrderDTO> costumdto;
+
+//        log.info("this sesuatu {}",MapperJSONUtil.prettyLog(sesuatu));
+
+        costumdto = mPurchaseOrderRepository.findById(id)
             .map(mPurchaseOrderMapper::toDto);
+        costumdto.equals(mPurchaseOrderMapper);
+
+        log.info("this vendor name test {}",costumdto.get().getVendorName());
+        Page<MPurchaseOrderLineDTO> mPurchaseOrderLineDTOS;
+         mPurchaseOrderLineDTOS=mPurchaseOrderLineService.findAll(Pageable.unpaged());
+        log.info("this line {}",MapperJSONUtil.prettyLog(mPurchaseOrderLineDTOS));
+        costumdto.get().setmPurchaseOrderLineDTOList(mPurchaseOrderLineDTOS.get().collect(Collectors.toList()));
+
+
+
+
+        log.info("this costum dto {}",costumdto);
+        return costumdto;
     }
 
     /**
